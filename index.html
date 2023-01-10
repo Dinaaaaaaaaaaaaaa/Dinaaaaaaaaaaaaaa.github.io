@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scream into the void</title>
+  </head>
+
+  <body>
+    <div class="headingtext" >
+      <h1 id="headertext" onclick="contextclick()">The void is listening...</h1>
+      </div> 
+         
+    <div class="bodytext" contenteditable="true" data-text="" oninput="typingnow()" id="textbody" onkeypress="return entkey(event)">
+      </div>
+    
+    <script>
+    var i = 0;
+    var y = 0;
+    var b = 0;
+    var txt = ""; /* The text */
+    var contxt = "Type out anything and everything you want, the void will listen..."
+    var contxt2 = "";
+    var speed = 40; /* The speed/duration of the effect in milliseconds */
+    var clicked = false;
+    document.getElementById("textbody").innerHTML = "";
+
+    function contextclick() {
+      if (clicked == false) {
+        clicked = true;
+        document.getElementById("textbody").placeholder = "";
+        contxtdisplay();
+      }
+      else {
+        clicked = false;
+        contxt2 = "";
+        document.getElementById("textbody").setAttribute("data-text", "");
+        b = 0;
+      }
+    }
+
+    function contxtdisplay() {
+      if (b < contxt.length) {
+        contxt2 += contxt.charAt(b);
+        document.getElementById("textbody").setAttribute("data-text", contxt2);
+        b++;
+        setTimeout(contxtdisplay, speed);
+      }
+    }
+
+    function typingnow() {
+      document.getElementById("headertext").style.animation = "hideaway 4s forwards";
+    }
+
+    function deletetyping() {
+      if (y <= i) {
+        //document.getElementById("headertext").innerHTML = i.toString() +"  |  "+ y.toString();
+        document.getElementById("headertext").innerHTML = "We are listening...\n"+ y.toString();
+        document.getElementById("textbody").innerHTML = txt.substring(y + Math.ceil(y / 100));
+        y+=Math.ceil(y / 100);
+        setTimeout(deletetyping, speed);
+      }
+      else {
+        document.getElementById("textbody").contentEditable = true;
+        document.getElementById("headertext").innerHTML = "We are listening...\n"+i.toString();
+      }
+    }
+
+    function entkey(event) {
+      if (event.keyCode == 13) {
+        window.scrollTo(0, 0);
+        txt = document.getElementById("textbody").innerText;
+        i = txt.length;
+        y = 1;
+        document.getElementById("textbody").contentEditable = false;
+        document.getElementById("headertext").style.animation = "reveal 4s forwards";
+        deletetyping();
+      }
+    }
+    </script>
+  </body>
+</html>
